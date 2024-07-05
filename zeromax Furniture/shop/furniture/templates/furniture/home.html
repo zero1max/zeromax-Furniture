@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .product-price {
+        font-weight: bold;
+    }
+    .original-price {
+        text-decoration: line-through;
+        color: grey;
+    }
+    .discount-price {
+        color: red;
+    }
+</style>
+<!-- Start Product Section -->
+<div class="product-section">
+<div class="container">
+    <div class="row">
+        {% for furniture in furnitures %}
+            {% if furniture.is_published %}
+                {% if forloop.counter <= 4 %}
+                    <div class="col-12 col-md-3 mb-5 mb-md-0">
+                        <div class="product-item">
+                            <a class="product-item" href="{% url 'detail_url' slug=furniture.slug %}">
+                                <img src="{{ furniture.photo.url }}" class="img-fluid product-thumbnail">
+                                <h3 class="product-title">{{ furniture.title }}</h3>
+                                {% if furniture.discount_percentage %}
+                                    <div class="price-section">
+                                        <span class="original-price">${{ furniture.price }}</span> 
+                                        <span class="discount-price">${{ furniture.get_discount_price }}</span>
+                                    </div>
+                                {% else %}
+                                    <strong class="product-price">${{ furniture.price }}</strong>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+</div>
+<!-- End Product Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+<div class="container">
+    <div class="row justify-content-between">
+        <div class="col-lg-6">
+            <h2 class="section-title">Why Choose Us</h2>
+            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
+
+            <div class="row my-5">
+                <div class="col-6 col-md-6">
+                    <div class="feature">
+                        <div class="icon">
+                            <img src="{% static 'images/truck.svg' %}" alt="Image" class="imf-fluid">
+                        </div>
+                        <h3>Fast &amp; Free Shipping</h3>
+                        <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="feature">
+                        <div class="icon">
+                            <img src="{% static 'images/bag.svg' %}" alt="Image" class="imf-fluid">
+                        </div>
+                        <h3>Easy to Shop</h3>
+                        <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="feature">
+                        <div class="icon">
+                            <img src="{% static 'images/support.svg' %}" alt="Image" class="imf-fluid">
+                        </div>
+                        <h3>24/7 Support</h3>
+                        <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6">
+                    <div class="feature">
+                        <div class="icon">
+                            <img src="{% static 'images/return.svg' %}" alt="Image" class="imf-fluid">
+                        </div>
+                        <h3>Hassle Free Returns</h3>
+                        <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="img-wrap">
+                <img src="{% static 'images/why-choose-us-img.jpg' %}" alt="Image" class="img-fluid">
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start We Help Section -->
+<div class="we-help-section">
+<div class="container">
+    
+    <div class="row justify-content-between">
+        <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="imgs-grid">
+                {% for wehelp in wehelps %}
+                <div class="grid grid-1"><img src="{{ wehelp.photo1.url }}" alt="Furni Photo"></div>
+                <div class="grid grid-2"><img src="{{ wehelp.photo2.url }}" alt="Furni Photo"></div>
+                <div class="grid grid-3"><img src="{{ wehelp.photo3.url }}" alt="Furni Photo"></div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-5 ps-lg-5">
+            {% for wehelp in wehelps %}
+            <h2 class="section-title mb-4">{{ wehelp.title }}</h2>
+            <p>{{ wehelp.description }}</p>
+            {% endfor %}
+            <ul class="list-unstyled custom-list my-4">
+                {% for benefit in benefits %}
+                <li>{{ benefit.benefits }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+<!-- End We Help Section -->
+
+<!-- Start Popular Product -->
+<div class="popular-product">
+<div class="container">
+    <div class="row">
+        {% for furniture in furnitures %}
+            {% if furniture.is_published %}
+                {% if forloop.counter <= 3 %}
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                        <div class="product-item-sm d-flex">
+                            <div class="thumbnail">
+                                <img src="{{ furniture.photo.url }}" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="pt-3">
+                                <h3>{{ furniture.title }}</h3>
+                                <p>{{ furniture.description|truncatewords:5 }}</p>
+                                <p><a href="{% url 'detail_url' furniture.slug %}">Read More</a></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+</div>
+</div>
+<!-- End Popular Product -->
+
+<!-- Start Blog Section -->
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">Discounts</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="{% url "discount" %}" class="more">View All Discounts</a>
+            </div>
+        </div>
+
+        <div class="row">       
+            {% for discount in discounts %}
+                {% if discount.is_published %}
+                    {% if forloop.counter <= 3 %}
+                        <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                            <div class="post-entry">
+                                <a href="{% url 'discount_detail_url' slug=discount.slug %}" class="post-thumbnail">
+                                    <img src="{{ discount.photo.url }}" alt="Image" class="img-fluid">
+                                </a>
+                                <div class="post-content-entry">
+                                    <h3><a href="{% url 'discount_detail_url' discount.slug %}">{{ discount.title }}</a></h3>
+                                    <div class="meta">
+                                        <span>by <a href="#">{{ discount.owner }}</a></span>
+                                        <span>on <a href="#">{{ discount.created_at|date:"Y-m-d" }}</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>
+<!-- End Blog Section -->	
+
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">News</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="{% url "news" %}" class="more">View All News</a>
+            </div>
+        </div>
+    
+        <div class="row">
+            {% for new in news %}
+                {% if new.is_published %}
+                    {% if forloop.counter <= 3 %}
+                        <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                            <div class="post-entry">
+                                <a href="{% url 'news_detail_url' slug=new.slug %}" class="post-thumbnail">
+                                    <img src="{{ new.photo.url }}" alt="Image" class="img-fluid">
+                                </a>
+                                <div class="post-content-entry">
+                                    <h3>
+                                        <a href="{% url 'news_detail_url' slug=new.slug %}">
+                                            {{ new.title }}
+                                        </a>
+                                    </h3>
+                                    <div class="meta">
+                                        <span>by <a href="#">{{ new.owner }}</a></span>
+                                        <span>on <a href="#">{{ new.created_at|date:"Y-m-d" }}</a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>        
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .product-price {
+        font-weight: bold;
+    }
+    .original-price {
+        text-decoration: line-through;
+        color: grey;
+    }
+    .discount-price {
+        color: red;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            {% if furniture.photo %}
+            <img src="{{ furniture.photo.url }}" class="img-fluid" alt="{{ furniture.title }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6 mt-5">
+            <h2>{{ furniture.title }}</h2>
+            <p>{{ furniture.description }}</p>
+            {% if furniture.discount_percentage %}
+                <div class="price-section">
+                    <span class="original-price">${{ furniture.price }}</span> 
+                    <strong><h3 class="discount-price">${{ furniture.get_discount_price }}</h3></strong>
+                </div>
+            {% else %}
+                <strong><h3 class="product-price">${{ furniture.price }}</h3></strong>
+            {% endif %}
+            <div class="mt-3">
+                {% if furniture.quantity > 0 %}
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'to_cart' furniture.pk 'add' %}" class="btn btn-secondary">Add to Cart</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-secondary">Login to Add to Cart</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'shop' %}" class="btn btn-primary">Mahsulot tugagan!</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
