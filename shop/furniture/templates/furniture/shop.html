@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .product-price {
+        font-weight: bold;
+    }
+    .original-price {
+        text-decoration: line-through;
+        color: grey;
+    }
+    .discount-price {
+        color: red;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+    .pagination button:disabled {
+        cursor: not-allowed;
+        background-color: #e9ecef;
+    }
+</style>
+<div class="product-section">
+    <div class="container">
+        <div class="row">
+            {% for furniture in page_obj %}
+                {% if furniture.is_published %}
+                    <div class="col-12 col-md-3 mb-5 mb-md-0">
+                        <div class="product-item">
+                            <a class="product-item" href="{% url 'detail_url' slug=furniture.slug %}">
+                                <img src="{{ furniture.photo.url }}" class="img-fluid product-thumbnail">
+                                <h3 class="product-title">{{ furniture.title }}</h3>
+                                {% if furniture.discount_percentage %}
+                                    <div class="price-section">
+                                        <span class="original-price">${{ furniture.price }}</span> 
+                                        <span class="discount-price">${{ furniture.get_discount_price }}</span>
+                                    </div>
+                                {% else %}
+                                    <strong class="product-price">${{ furniture.price }}</strong>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <form action="" method="get" style="display:inline;">
+                    <input type="hidden" name="page" value="1">
+                    <button type="submit">&laquo; First</button>
+                </form>
+                <form action="" method="get" style="display:inline;">
+                    <input type="hidden" name="page" value="{{ page_obj.previous_page_number }}">
+                    <button type="submit">Previous</button>
+                </form>
+            {% else %}
+                <button type="button" disabled>&laquo; First</button>
+                <button type="button" disabled>Previous</button>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <form action="" method="get" style="display:inline;">
+                    <input type="hidden" name="page" value="{{ page_obj.next_page_number }}">
+                    <button type="submit">Next</button>
+                </form>
+                <form action="" method="get" style="display:inline;">
+                    <input type="hidden" name="page" value="{{ page_obj.paginator.num_pages }}">
+                    <button type="submit">Last &raquo;</button>
+                </form>
+            {% else %}
+                <button type="button" disabled>Next</button>
+                <button type="button" disabled>Last &raquo;</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
